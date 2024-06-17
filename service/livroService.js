@@ -1,3 +1,4 @@
+import { json } from 'express'
 import fs from 'fs'
 
 function getTodosLivros(){
@@ -10,4 +11,23 @@ function getLivroPorId(id){
     return livroFiltrado
 }
 
-export {getTodosLivros, getLivroPorId}
+function insereLivro(livroNovo) {
+    const livros = JSON.parse(fs.readFileSync("livros.JSON"));
+    const novaListaDeLivros = [...livros, livroNovo];
+    fs.writeFileSync("livros.json", JSON.stringify(novaListaDeLivros));
+};
+
+function modificaLivro (modificaLivro, id){
+    let livroAtuais = JSON.parse(fs.readFileSync("livros.json"))
+    const indiceModificado = livrosAtuais.findIndex(livro => livro.id === id)
+    const conteudoModificado = {...livrosAtuais[indiceModificado], ...modificacoes}
+    livrosAtuais[indiceModificado] = conteudoMudado
+    fs.writeFileSync("livros.json", JSON.stringify(livrosAtuais));
+};
+function deletaLivroPorId(id) {
+    const livros = JSON.parse(fs.readFileSync("livros.json"))
+    const livrosFiltrados = livros.filter(livro = livro.id !== id)
+    fs.writeFileSync("livros.json", JSON.stringify(livrosfiltrados))
+}
+
+export {getTodosLivros, getLivroPorId, insereLivro, modificaLivro, deletaLivroPorId}
